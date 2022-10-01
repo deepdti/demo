@@ -1,0 +1,5 @@
+FROM pigparadise/deep_demo:v1.15.5
+
+WORKDIR /app
+
+
