@@ -22,13 +22,14 @@ def new_model_obj(data, model_cfg):
     return func(data, model_cfg["args"])
 
 
-def run_model(model_obj, data, run_cfg):
+# TODO：扩展predict和evaluate
+def run_model(model_obj, data, fit_args):
     # train
     history = model_obj.fit(
         data.get_train_x(),
         data.get_train_y(),
-        epochs = run_cfg["epochs"],
-        validation_data = data.get_val_data(),                
+        validation_data = data.get_val_data(),
+        **fit_args
     )
     
     # predict
@@ -55,7 +56,7 @@ def main():
             for model_id, model_cfg in enumerate(config.MODEL_LIST):
                 print("model:%s" % model_id, model_cfg)
                 model_obj = new_model_obj(data, model_cfg)
-                run_model(model_obj, data, config.MODEL_RUN)
+                run_model(model_obj, data, model_cfg["fit_args"])
 
 
 if __name__ == "__main__":

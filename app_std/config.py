@@ -34,10 +34,11 @@ INPUT_LIST = [
     }
 ]
 
-### MODEL LIST CONFIG
+### MODEL LIST CONFIG(with fit args)
 MODEL_LIST = []
 
 # add deepdta models
+from tensorflow.keras.callbacks import EarlyStopping
 deepdta_num_windows = [1]
 deepdta_seq_window_lengths =[8]
 deepdta_smi_window_lengths =[4]
@@ -45,6 +46,14 @@ deepdta_base_model_obj = {
     "loader": ["deepdta", "build_adapter"],
     "args": {
         "func_name": "build_combined_categorical",
+    },
+    "fit_args": {
+        "epochs": 2,
+        "batch_size": 8,
+        "shuffle": False,
+        "callbacks": [
+            EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=15)
+        ]
     }
 }
 for num_window in deepdta_num_windows:
@@ -71,18 +80,14 @@ deepconvdti_base_model_obj = {
         "activation": "elu",
         "n_filters": 128,
         "dropout": 0,
+    },
+    "fit_args": {
+        "epochs": 2,
+        "batch_size": 8,
+        "shuffle": False,
     }
 }
 MODEL_LIST.append(deepconvdti_base_model_obj)
-
-### MODEL RUN CONFIG
-# from tensorflow.keras.callbacks import EarlyStopping
-MODEL_RUN = {
-    "epochs": 2,
-    "batch_size": 8,
-    "shuffle": False,
-    #"es": EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=15)
-}
 
 EVALUATOR = {
 }
