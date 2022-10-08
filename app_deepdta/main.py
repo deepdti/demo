@@ -292,23 +292,14 @@ def nfold_1_2_3_setting_sample(data, runmethod, measure, FLAGS):
 from arguments import argparser
 if __name__ == "__main__":
     FLAGS = argparser()
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("--config", type=str, help="json config file")
-    # args = parser.parse_known_args()
-    # with open(args.config, 'rb') as fp:
-    #     config = json.load(fp)
-    #     print("config:", args.config, config)
-
-    data = AppUtil.conv_data(
-        "deepdta_datahelper",
-        args={
-            "dataset_path": FLAGS.dataset_path, #"../data/davis",
-            "max_seq_len": FLAGS.max_seq_len,
-            "max_smi_len": FLAGS.max_smi_len,
-            "problem_type": FLAGS.problem_type,
-            "is_log": FLAGS.is_log,
-        }
+    
+    from convertor.deepdta_datahelper import run as parse_data
+    data = parse_data(
+        FLAGS.dataset_path, FLAGS.problem_type, 
+        FLAGS.max_seq_len, FLAGS.max_smi_len,
+        FLAGS.is_log
     )
+
     # TODO: 用opts替换FLAGS
     FLAGS.charseqset_size = data["charseqset_size"]
     FLAGS.charsmiset_size = data["charsmiset_size"]
