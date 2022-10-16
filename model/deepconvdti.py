@@ -8,7 +8,6 @@ import pandas as pd
 
 # import keras modules
 import tensorflow as tf
-import tensorflow.keras.backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout, BatchNormalization, Activation, Embedding, Lambda
 from tensorflow.keras.layers import Convolution1D, GlobalMaxPooling1D, SpatialDropout1D
@@ -119,7 +118,10 @@ class Drug_Target_Prediction(object):
 
         opt = Adam(lr=learning_rate, decay=self.__decay)
         self.__model_t.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
-        K.get_session().run(tf.global_variables_initializer())
+        with tf.compat.v1.keras.backend.get_session() as sess:
+            run_args = tf.compat.v1.global_variables_initializer()
+            #welcome = tf.constant('Welcome to tensorflow world!')
+            sess.run(run_args)
 
     def fit(self, drug_feature, protein_feature, label, n_epoch=10, batch_size=32):
         for _ in range(n_epoch):
@@ -130,7 +132,6 @@ class Drug_Target_Prediction(object):
         self.__model_t.summary()
     
     def validation(self, drug_feature, protein_feature, label, output_file=None, n_epoch=10, batch_size=32, **kwargs):
-
         if output_file:
             param_tuple = pd.MultiIndex.from_tuples([("parameter", param) for param in ["window_sizes", "drug_layers", "fc_layers", "learning_rate"]])
             result_df = pd.DataFrame(data = [[self.__protein_strides, self.__drugs_layer, self.__fc_layers, self.__learning_rate]]*n_epoch, columns=param_tuple)
