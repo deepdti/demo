@@ -5,7 +5,7 @@ import datetime
 logger = logging.getLogger('app')
 logger.setLevel(logging.DEBUG)
 log_fmt = logging.Formatter(
-    "%(asctime)s [%(levelname)s] @%(filename)%s:%(lineno)d: %(message)s"
+    "%(asctime)s [%(levelname)s] @%(filename)s:%(lineno)d: %(message)s"
 )
 
 rf_handler = logging.handlers.TimedRotatingFileHandler(

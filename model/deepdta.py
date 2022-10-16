@@ -13,11 +13,9 @@ rn.seed(1)
 
 session_conf = tf.compat.v1.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
 from tensorflow import keras
-from tensorflow.keras import backend as K
-tf.set_random_seed(0)
-sess = tf.Session(graph=tf.get_default_graph(), config=session_conf)
-K.set_session(sess)
-
+tf.compat.v1.set_random_seed(0)
+sess = tf.compat.v1.Session(graph=tf.compat.v1.get_default_graph(), config=session_conf)
+tf.compat.v1.keras.backend.set_session(sess)
 
 from itertools import product
 
@@ -57,7 +55,7 @@ def cindex_score(y_true, y_pred):
     g = tf.cast(g == 0.0, tf.float32) * 0.5 + tf.cast(g > 0.0, tf.float32)
 
     f = tf.subtract(tf.expand_dims(y_true, -1), y_true) > 0.0
-    f = tf.matrix_band_part(tf.cast(f, tf.float32), -1, 0)
+    f = tf.compat.v1.matrix_band_part(tf.cast(f, tf.float32), -1, 0)
 
     g = tf.reduce_sum(tf.multiply(g, f))
     f = tf.reduce_sum(f)
