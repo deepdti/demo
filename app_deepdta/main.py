@@ -310,11 +310,14 @@ if __name__ == "__main__":
     evaluator = get_cindex
     logger.info("FLAGS:%s", FLAGS)
 
+    S1_avgperf, S1_avgloss, S1_teststd = 1, 1, 1
+
+
     S1_avgperf, S1_avgloss, S1_teststd = nfold_1_2_3_setting_sample(
         data, model_builder, evaluator, FLAGS
     )
-    logging("Setting " + str(FLAGS.problem_type), FLAGS)
-    logging("avg_perf = %.5f,  avg_mse = %.5f, std = %.5f" % 
-            (S1_avgperf, S1_avgloss, S1_teststd), FLAGS)
+    logger.info("FLAGS:%s", FLAGS)
+    logger.info("avg_perf = %.5f,  avg_mse = %.5f, std = %.5f" % 
+                 (S1_avgperf, S1_avgloss, S1_teststd))
     
 
