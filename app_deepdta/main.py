@@ -313,9 +313,8 @@ if __name__ == "__main__":
     S1_avgperf, S1_avgloss, S1_teststd = nfold_1_2_3_setting_sample(
         data, model_builder, evaluator, FLAGS
     )
-    logger.info(
-        "avg_perf = %.5f,  avg_mse = %.5f, std = %.5f, opts:%s" %  
-        (S1_avgperf, S1_avgloss, S1_teststd)
-    )
+    logging("Setting " + str(FLAGS.problem_type), FLAGS)
+    logging("avg_perf = %.5f,  avg_mse = %.5f, std = %.5f" % 
+            (S1_avgperf, S1_avgloss, S1_teststd), FLAGS)
     
 
