@@ -70,4 +70,11 @@ if __name__ == "__main__":
     # # 设置使用记录：https://www.tensorflow.org/guide/gpu?hl=zh-cn
     # tf.debugging.set_log_device_placement(True)
 
+    import tensorflow as tf
+    from tensorflow import keras
+    session_conf = tf.compat.v1.ConfigProto(intra_op_parallelism_threads=6, inter_op_parallelism_threads=6)
+    tf.compat.v1.set_random_seed(0)
+    sess = tf.compat.v1.Session(graph=tf.compat.v1.get_default_graph(), config=session_conf)
+    tf.compat.v1.keras.backend.set_session(sess)
+
     main()

@@ -18,7 +18,11 @@ from tensorflow.keras.preprocessing import sequence
 
 
 from sklearn.metrics import precision_recall_curve, auc, roc_curve
-
+# with tf.compat.v1.keras.backend.get_session() as sess:
+#     run_args = tf.compat.v1.global_variables_initializer()
+#     #welcome = tf.constant('Welcome to tensorflow world!')
+#     sess.run(run_args)
+    
 class Drug_Target_Prediction(object):
     
     def PLayer(self, size, filters, activation, initializer, regularizer_param):
@@ -118,10 +122,6 @@ class Drug_Target_Prediction(object):
 
         opt = Adam(lr=learning_rate, decay=self.__decay)
         self.__model_t.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
-        with tf.compat.v1.keras.backend.get_session() as sess:
-            run_args = tf.compat.v1.global_variables_initializer()
-            #welcome = tf.constant('Welcome to tensorflow world!')
-            sess.run(run_args)
 
     def fit(self, drug_feature, protein_feature, label, n_epoch=10, batch_size=32):
         for _ in range(n_epoch):

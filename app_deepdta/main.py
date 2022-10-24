@@ -292,6 +292,12 @@ from arguments import argparser
 if __name__ == "__main__":
     FLAGS = argparser()
     
+    from tensorflow import keras
+    session_conf = tf.compat.v1.ConfigProto(intra_op_parallelism_threads=1, inter_op_parallelism_threads=1)
+    tf.compat.v1.set_random_seed(0)
+    sess = tf.compat.v1.Session(graph=tf.compat.v1.get_default_graph(), config=session_conf)
+    tf.compat.v1.keras.backend.set_session(sess)
+
     from convertor.deepdta_datahelper import run as parse_data
     data = parse_data(
         FLAGS.dataset_path, FLAGS.problem_type, 
@@ -309,9 +315,6 @@ if __name__ == "__main__":
     from evaluator.deepdta_emetrics import get_aupr, get_cindex, get_rm2
     evaluator = get_cindex
     logger.info("FLAGS:%s", FLAGS)
-
-    S1_avgperf, S1_avgloss, S1_teststd = 1, 1, 1
-
 
     S1_avgperf, S1_avgloss, S1_teststd = nfold_1_2_3_setting_sample(
         data, model_builder, evaluator, FLAGS
