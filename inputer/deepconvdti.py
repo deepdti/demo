@@ -47,6 +47,7 @@ def run(dti_dir, drug_dir, protein_dir, with_label=True,
     dti_df = pd.merge(dti_df, protein_df, left_on=protein_col, right_index=True)
     dti_df = pd.merge(dti_df, drug_df, left_on=drug_col, right_index=True)
     drug_feature = np.stack(dti_df[drug_vec].map(lambda fp: fp.split("\t")))
+    drug_feature = np.asarray(drug_feature, dtype=np.int32)
     if prot_vec=="Convolution":
         protein_feature = sequence.pad_sequences(dti_df["encoded_sequence"].values, prot_len)
     else:
