@@ -1,5 +1,5 @@
 import os,json,argparse
-import sys
+import sys, time
 sys.path.append(os.path.dirname(os.getcwd()))
 from copy import deepcopy
 
@@ -45,7 +45,7 @@ def main():
         print("inputer:", input_cfg["name"], input_cfg)
         print("total data num:%s" % inputer.get_testcase_num())
         for data_id in range(inputer.get_testcase_num()):
-            print("data:%s" % data_id)
+            print("data:", data_id)
             data = inputer.get_testcase_data(data_id)
             print(
                 data, 
@@ -53,10 +53,19 @@ def main():
                 "len:", data.drug_max_seqlen, data.target_max_seqlen,
                 "csz:", data.drug_charset_size, data.target_charset_size
             )
-            for model_id, model_cfg in enumerate(config.MODEL_LIST):
-                print("model:%s" % model_id, model_cfg)
+            for model_cfg in config.MODEL_LIST:
+                print("")
+                print("[EXPERIMENT BEGIN]: mode:%s, inputer:%s, data_id:%s" % (model_cfg['name'], input_cfg["name"], data_id))
+                t_begin = time.time()
+
                 model_obj = new_model_obj(data, model_cfg)
                 run_model(model_obj, data, model_cfg["fit_args"])
+
+                print(
+                    "[EXPERIMENT END]: mode:%s, inputer:%s, data_id:%s, time:%.2f" % 
+                    (model_cfg['name'], input_cfg["name"], data_id, time.time() - t_begin)
+                )
+                print("")
 
 
 if __name__ == "__main__":

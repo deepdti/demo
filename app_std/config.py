@@ -43,6 +43,7 @@ deepdta_num_windows = [1]
 deepdta_seq_window_lengths =[8, 12]
 deepdta_smi_window_lengths =[4, 8]
 deepdta_base_model_obj = {
+    "name": "deepdta",
     "loader": ["deepdta", "build_adapter"],
     "args": {
         "func_name": "build_combined_categorical",
@@ -60,6 +61,7 @@ for num_window in deepdta_num_windows:
     for seq_window_length in deepdta_seq_window_lengths:
         for smi_window_length in deepdta_smi_window_lengths:
             model_obj = deepcopy(deepdta_base_model_obj)
+            model_obj['name'] = "%s:%s_%s_%s" % (model_obj['name'], num_window, seq_window_length, smi_window_length)
             model_obj["args"]["func_args"] = {
                 "num_window": num_window,
                 "smi_window_length": smi_window_length,
@@ -69,6 +71,7 @@ for num_window in deepdta_num_windows:
 
 # add convdeepdti model
 deepconvdti_base_model_obj = {
+    "name": "deepconvdt",
     "loader": ["deepconvdti", "build_adapter"],
     "args": {
         "window_sizes": [10,15,20,25,30],
